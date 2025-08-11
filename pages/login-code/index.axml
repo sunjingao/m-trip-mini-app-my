@@ -1,0 +1,19 @@
+<view class="page">
+  <view class="title">请输入验证码</view
+  >
+  <view class="second-title"
+    >验证码已发送至{{ phone }}</view
+  >
+  <view class="phone-code-part">
+    <phone-code onFinish="handleFinish" />
+  </view>
+  <view
+    onTap="handleSendCode"
+    a:if="{{ time === 0 }}"
+    class="resend"
+    >重新发送</view
+  >
+  <view a:else class="time"
+    >{{ time }}S后重新发送</view
+  >
+</view>

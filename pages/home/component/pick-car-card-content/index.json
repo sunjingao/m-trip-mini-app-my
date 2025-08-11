@@ -1,0 +1,11 @@
+{
+  "component": true,
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "van-switch": "antd-mini/es/Switch/index",
+    "van-icon": "antd-mini/es/Icon/index",
+    "city-point": "./component/city-point/index",
+    "time": "./component/time/index",
+    "van-button": "antd-mini/es/Button/index"
+  }
+}

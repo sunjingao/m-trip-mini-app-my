@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "noImplicitThis": true,
+    "types": [
+      "@mini-types/alipay"
+    ],
+    "lib": [
+      "ES2015",
+      "DOM"
+    ]
+  },
+  //  "**/*"
+  // 这么写相当于关闭所有ts校验 sja
+  "include": [
+    "const/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

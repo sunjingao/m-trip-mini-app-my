@@ -1,0 +1,6 @@
+{
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "phone-code": "./phone-code/index"
+  }
+}

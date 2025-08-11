@@ -1,0 +1,16 @@
+<view a:if="{{ !enableLocate || !enableCity  }}" class="page">
+  <view a:if="{{ !enableLocate }}" class="enable-locate-part">
+    <van-icon type="ExclamationCircleFill" />
+
+    <text class="left-des">未开启定位权限</text>
+    <text class="center" />
+    <van-button onTap="handleOpenLocate" className="enable-locate-btn" inline size="small">去开启</van-button>
+  </view>
+  <view a:elif="{{ !enableCity }}" class="not-enable-locate">
+    <view class="icon-part">
+      <van-icon type="InformationCircleOutline" />
+    </view>
+
+    <text class="fail-des">抱歉，当前城市未开通运营</text>
+  </view>
+</view>

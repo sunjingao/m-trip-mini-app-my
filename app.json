@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/city-select-page/index",
+    "pages/location/index",
+    "pages/web-view-normal/index",
+    "pages/login/index",
+    "pages/login-code/index",
+    "pages/location/index",
+    "pages/person-center/index",
+    "pages/web-view-h5/index",
+    "pages/web-view-normal/index",
+    "pages/web-view-special/activity-student/index",
+    "pages/pay/index",
+    "pages/esign/index",
+    "pages/pickup-car-face/index",
+    "pages/id-card-face-recognition/index",
+    "pages/face/index",
+    "pages/dk/dk-order"
+  ],
+  "lazyCodeLoading": "renderedComponents",
+  "styleIsolation": "shared",
+  "window": {
+    "defaultTitle": "摩捷出行"
+  },
+  "tabBar": {
+    "items": [
+      {
+        "pagePath": "pages/home/index",
+        "name": "用车",
+        "icon": "asset/png/unselected-car.png",
+        "activeIcon": "asset/png/selected-car.png"
+      },
+      {
+        "pagePath": "pages/person-center/index",
+        "name": "个人中心",
+        "icon": "asset/png/unselected-my.png",
+        "activeIcon": "asset/png/selected-my.png"
+      }
+    ]
+  }
+}

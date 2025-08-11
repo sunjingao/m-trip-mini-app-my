@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "ant-countdown": "antd-mini/es/Countdown/index",
+    "ant-checkbox": "antd-mini/es/Checkbox/index",
+    "ant-button": "antd-mini/es/Button/index"
+  },
+  "styleIsolation": "apply-shared"
+}

@@ -1,0 +1,77 @@
+.page {
+  height: 100vh;
+  background-color: #F1F3F6;
+  display: flex;
+  flex-direction: column;
+
+  .search-part {
+    padding: 10px 16px;
+    background-color: #fff;
+
+    .preifx {
+      display: flex;
+      align-items: center;
+    }
+
+    .word {
+      color: #333;
+    }
+  }
+
+  .location-title {
+    display: flex;
+    justify-content: space-between;
+
+    .left {
+      display: flex;
+      align-items: center;
+  
+      .city-name {
+        margin-left: 24rpx;
+      }
+    }
+
+    .right {
+      color: #0186F7;
+    }
+  }
+
+  .content-part {
+    flex: 1; 
+    overflow-y: auto;
+
+    .location-title {
+      line-height: 40px; 
+      padding-left: 12px; 
+      color: #999; 
+      font-size: 0.3rem;
+    }
+
+    .scroll-view-h {
+      height: calc(100% - 40px)
+    }
+    
+    .item {
+      display: flex; 
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .has-more {
+      display: flex;
+      justify-content: center;
+      margin-top: 8rpx;
+    }
+
+    .no-more {
+      display: flex;
+      justify-content: center;
+      margin-top: 8rpx;
+    }
+  }
+}

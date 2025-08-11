@@ -1,0 +1,458 @@
+<view a:if="{{ orderInfo.id }}">
+  <!-- 倒计时提示条 -->
+  <view
+    a:if="{{
+      orderInfo.status === DKStatusMap[0] ||
+      orderInfo.leasePaymentStatus === 'UNPAID' ||
+      orderInfo.paymentStatus === 'UPDATE_UNPAID'
+    }}"
+    class="countdown-bar"
+  >
+    <text a:if="{{ orderInfo.paymentStatus === 'UPDATE_UNPAID' }}">修改信息将在</text>
+    <text a:else>订单将在</text>
+   <ant-countdown time="{{ countDownValue }}" onCountdownChange="onChange">
+      <view
+        slot="$default"
+        slot-scope="module"
+      >
+        <view class="status-waiting-pickup mx-6">{{module.hour}}小时{{module.min}}分{{module.sec}}秒</view>
+      </view>
+    </ant-countdown>
+    <text a:if="{{ orderInfo.paymentStatus === 'UPDATE_UNPAID' }}">后自动取消，请尽快支付</text>
+    <text a:else>后关闭，请尽快支付</text>
+  </view>
+
+  <!-- 待取车提示 -->
+  <view
+    a:elif="{{ orderInfo.status === DKStatusMap[1] }}"
+    class="notice-bar"
+  >
+    请在取车时间内完成取车操作
+  </view>
+
+  <!-- 订单状态卡片 -->
+  <view class="card base-card mt-20">
+    <view a:if="{{ orderInfo.status === DKStatusMap[0] }}" class="status-tag status-reserved">已预约</view>
+    <view a:if="{{ orderInfo.status === DKStatusMap[1] }}" class="status-tag status-waiting-pickup">待取车</view>
+    <view a:if="{{ orderInfo.status === DKStatusMap[2] }}" class="status-tag status-waiting-return">待还车</view>
+    <view a:if="{{ orderInfo.status === DKStatusMap[3] }}" class="status-tag status-returned">已还车</view>
+    <view a:if="{{ orderInfo.status === DKStatusMap[4] }}" class="status-tag status-canceled">已取消</view>
+    <view a:if="{{ orderInfo.status === DKStatusMap[5] }}" class="status-tag status-completed">已完成</view>
+
+    <view class="order-number flex-start items-baseline mt-30">
+      订单号：<view class="text-sm">{{ orderInfo.no }}</view>
+
+      <view class="copy-btn ml-20" onTap="copy" data-no="{{ orderInfo.no }}">复制</view>
+    </view>
+
+    <view
+      a:if="{{ orderInfo.status === DKStatusMap[2] || orderInfo.status === DKStatusMap[3] }}"
+      class="energy-info flex-start mt-28"
+    >
+      开始{{ startEnergyShow }}
+    </view>
+
+    <view a:if="{{ orderInfo.status === DKStatusMap[3] }}" class="energy-info flex-start mt-28">
+      结束{{ endEnergyShow }}
+    </view>
+
+    <view
+      a:if="{{ orderInfo.leasePaymentStatus === 'UNPAID' }}"
+      class="unpaid-lease flex-start mt-28"
+    >
+      续租待支付：<view class="text-red">¥{{ allCostShow }}</view>
+    </view>
+  </view>
+
+  <!-- 车辆信息卡片 -->
+  <view class="card base-card mt-20">
+    <view class="vehicle-header flex-between">
+      <view class="vehicle-info font-medium">
+        <view>{{ orderInfo.seriesName }} 1</view>
+        <view class="mt-16">{{ orderInfo.plateLicenseNo }} 2</view>
+      </view>
+      <image src="{{ orderInfo.modelPic }}" class="vehicle-img"></image>
+    </view>
+
+    <view class="time-range flex-start mt-38 text-sm font-medium">
+      <view>{{ bookPickUpTimeCn }}</view>
+      <view class="time-separator flex-center relative">
+        <view class="separator-line"></view>
+        <view class="duration-tag">
+          {{ formatHourFeeDaysCn }}
+        </view>
+      </view>
+      <view>{{ bookReturnTimeCn }}</view>
+    </view>
+
+    <view class="divider mt-28"></view>
+
+    <view class="pickup-method flex-start mt-30 text-sm">
+      <view class="label w-150 text-gray">取车方式：</view>
+      <view class="flex-start">
+        {{ pickUpTypeMap[orderInfo.pickUpType] }}
+        <view class="text-xs text-gray">（营业时间：{{ orderInfo.pickOpeningTime }}-{{ orderInfo.pickClosingTime }}）</view>
+      </view>
+    </view>
+
+    <view class="pickup-address flex-start items-start mt-30 text-sm">
+      <view class="label w-150 text-gray">取车地址：</view>
+      <view class="flex-1">{{ orderInfo.pickUpAddress }}</view>
+      <image
+        class="location-icon"
+        src="{{ locationImgUrl }}"
+        onTap="navigation"
+        data-type="pickUp"
+      />
+    </view>
+
+    <view class="return-method flex-start mt-30 text-sm">
+      <view class="label w-150 text-gray">还车方式：</view>
+      <view class="flex-start">
+        {{ pickDownTypeMap[orderInfo.dropOffType] }}
+        <view class="text-xs text-gray">（营业时间：{{ orderInfo.dropOpeningTime }}-{{ orderInfo.dropClosingTime }}）</view>
+      </view>
+    </view>
+
+    <view class="return-address flex-start items-start mt-30 text-sm">
+      <view class="label w-150 text-gray">还车地址：</view>
+      <view class="flex-1">{{ orderInfo.dropOffAddress }}</view>
+            <image
+              class="location-icon"
+              src="{{ locationImgUrl }}"
+              onTap="navigation"
+              data-type="pickDown"
+              data-navigation="dropOff"
+            />
+    </view>
+  </view>
+
+  <!-- 承租人信息卡片 -->
+  <view class="card base-card mt-20">
+    <view class="section-title font-medium">承租人信息</view>
+
+    <view class="info-item flex-start mt-36 text-sm">
+      <view class="label w-150 text-gray">姓名：</view>
+      <view>{{ orderInfo.driverName }}</view>
+    </view>
+
+    <view class="info-item flex-start mt-28 text-sm">
+      <view class="label w-150 text-gray">身份证：</view>
+      <view>{{ orderInfo.driverIdCard }}</view>
+    </view>
+
+    <view class="info-item flex-start mt-28 text-sm">
+      <view class="label w-150 text-gray">手机号：</view>
+      <view>{{ orderInfo.driverPhone }}</view>
+    </view>
+  </view>
+
+  <!-- 订单金额卡片 -->
+  <view a:if="{{ orderInfo.status !== DKStatusMap[4] }}" class="card base-card mt-20">
+    <view class="amount-header flex-between font-medium">
+      <view class="flex-start">
+        订单金额
+        <text class="amount-value ml-30 font-medium flex-start">
+          {{ amountPrice }}元
+          <view class="discount-tag ml-20">专属优惠</view>
+        </text>
+      </view>
+      <view a:if="{{ orderInfo.paymentStatus === 'BOOK_UNPAID' || orderInfo.paymentStatus === 'UPDATE_UNPAID' }}" class="payment-status unpaid ml-auto">未支付</view>
+      <view a:else class="payment-status paid ml-auto">已支付</view>
+    </view>
+
+    <view a:if="{{ orderInfo.paymentStatus === 'UPDATE_UNPAID' }}">
+      <view class="paid-amount flex-start mt-36 text-sm">
+        <view class="label w-150 text-gray">已付金额：</view>
+        <view>{{ paidAmountShow }}元</view>
+      </view>
+
+      <view class="unpaid-amount flex-start mt-18 text-sm">
+        <view class="label w-150 text-gray">未付金额：</view>
+        <view class="text-red">{{ unpaidAmountShow }}元</view>
+      </view>
+    </view>
+
+    <view class="note mt-36 text-xs text-gray line-height-36">
+      订单包含{{ priceText }}，若发生其他费用，需另行支付
+    </view>
+
+    <view a:if="{{ orderInfo.orderFullCoverage != 0 }}">
+      <view class="note mt-20 text-xs text-gray line-height-36">
+        基础保障：租期内覆盖
+      </view>
+
+      <view a:if=" {{ orderInfo.includeGuaranteeFee.name }}" class="note mt-20 text-xs text-gray line-height-36">
+        {{ orderInfo.includeGuaranteeFee.name }}：
+        <text class="{{ red: orderInfo.orderFullCoverage != 1 }}">
+          {{ leaseFullCoverageMap[orderInfo.orderFullCoverage] }}
+        </text>
+      </view>
+
+      <view a:if="{{ orderInfo.orderFullCoverage == 2 }}">
+        <view a:for="orderInfo.coverageScope" key="index" class="note mt-20 text-xs text-gray line-height-36">
+          {{ item }}
+        </view>
+      </view>
+    </view>
+
+    <!-- onTap="handleGoguarantee" -->
+    <!-- <view class="guarantee-link flex-center">
+      <view class="link-text">全部保障条款</view>
+      <image src="./asset/png/question.png" class="question-icon ml-20"></image>
+    </view> -->
+  </view>
+
+  <!-- 押金支付卡片 -->
+  <view a:if="{{ orderInfo.paymentStatus === 'BOOK_UNPAID' }}" class="card base-card mt-20">
+    <view class="deposit-header flex-between font-medium">
+      押金支付
+      <view a:if="{{ foregiftData.foregiftStatus != '' }}" class="text-primary">已支付</view>
+    </view>
+
+    <view a:if="{{ foregiftData.foregiftStatus == '' }}" class="deposit-info flex-center mt-32 text-sm line-height-36">
+      <view class="deposit-term text-center">
+        <view>取车前</view>
+        <view>押金{{ vehicleForegift }}元</view>
+      </view>
+      <view class="deposit-separator"></view>
+      <view class="deposit-term text-center">
+        <view>最后订单还车结算</view>
+        <view>20日后申请退还</view>
+      </view>
+    </view>
+
+    <view class="deposit-options mt-28">
+      <view a:if="{{ foregiftData.foregiftStatus == '' }}" class="flex-between">
+        <view
+          class="{{ foregiftPay === 'preauth' ? 'option-active' : 'option-default' }}"
+          class="deposit-option"
+          onTap="foregiftPay = 'preauth'"
+        >
+          <view class="option-header flex-start mt-20">
+            <image class="option-icon" src="{{ preauthImgUrl }}" />
+            <view class="option-title ml-10">芝麻信用免押</view>
+          </view>
+          <view class="option-desc mt-26 text-xs text-gray line-height-36">
+            芝麻分>=600分，授权成功后免收
+          </view>
+          <image a:if="{{ foregiftPay === 'preauth' }}" class="option-check" src="../../static/icon/checked.png" />
+        </view>
+
+        <view
+          class="{{ foregiftPay === 'foregift' ? 'option-active' : 'option-default' }}"
+          class="deposit-option ml-20"
+          onTap="foregiftPay = 'foregift'"
+        >
+          <view class="option-header flex-start mt-20">
+            <image class="option-icon" src="{{ forgetImgUrl }}" />
+            <view class="option-title ml-10">线上交押</view>
+            <view class="refund-tag ml-10">可退</view>
+          </view>
+          <view a:if="{{ foregiftData.foregiftInsufficient }}" class="option-desc mt-26 text-xs text-gray line-height-36">
+            当前押金{{ foregiftData.amount }}元，再充值{{
+              needRecharge
+            }}元，满足押金{{ vehicleForegift }}元即可
+          </view>
+          <view a:else class="option-desc mt-26 text-xs text-gray line-height-36">
+            押金{{ vehicleForegift }}元，线上操作退押，安心有保障
+          </view>
+          <image a:if="{{ foregiftPay === 'foregift' }}" class="option-check" src="../../static/icon/checked.png" />
+        </view>
+      </view>
+
+      <view a:if="{{ foregiftData.foregiftStatus == 'preauth' }}" class="selected-option flex-start">
+        <image class="selected-icon ml-34" src="{{ preauthImgUrl }}" />
+        <view class="selected-title ml-12">芝麻信用免押</view>
+        <view class="original-price ml-24 text-gray line-through">¥{{ vehicleForegift }}</view>
+        <view class="free-tag ml-10">免</view>
+      </view>
+
+      <view a:if="{{ foregiftData.foregiftStatus == 'foregift' }}" class="selected-option flex-start">
+        <image class="selected-icon ml-34" src="{{ forgetImgUrl }}" />
+        <view class="selected-title ml-12">押金充值</view>
+        <view class="original-price ml-24 text-gray line-through">¥{{ vehicleForegift }}</view>
+        <view class="refund-tag ml-10">可退</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 续租金额卡片 -->
+  <view a:if="{{ orderInfo.leasePaymentStatus === 'UNPAID' }}" class="card base-card mt-20">
+    <view class="lease-header flex-between font-medium">
+      续租金额
+      <view a:if="{{ orderInfo.leasePaymentStatus === 'UNPAID' }}" class="text-red">未支付</view>
+      <view a:else class="text-primary">已支付</view>
+    </view>
+
+    <view class="lease-end flex-start mt-36 text-sm">
+      <view class="label w-130 text-gray">续租至：</view>
+<!--       sja -->
+      <view>{{ cotinueBookEndTimeSow }}</view>
+    </view>
+
+    <view class="lease-amount flex-start mt-28 text-sm">
+      <view class="label w-150 text-gray">续租金额：</view>
+      <view>{{ priceFormat(orderInfo.allCost) }}元</view>
+    </view>
+
+    <view class="note mt-20 text-xs text-gray line-height-36">
+      基础保障：续租期内覆盖
+    </view>
+
+    <view a:if="{{ orderInfo.leaseIncludeGuaranteeFee.name }}" class="note mt-20 text-xs text-gray line-height-36">
+      {{ orderInfo.leaseIncludeGuaranteeFee.name }}：
+      <text a:if="{{ orderInfo.leaseFullCoverage == 1 }}">续租期内覆盖</text>
+      <text a:elif="{{ orderInfo.leaseFullCoverage == 0 }}" class="red">续租期未内覆盖</text>
+    </view>
+  </view>
+
+  <!-- 修改生效规则 -->
+  <view a:if="{{ orderInfo.paymentStatus === 'UPDATE_UNPAID' }}" class="card base-card mt-20">
+    <view class="section-title font-medium">修改生效规则</view>
+
+    <view class="rule-item mt-32 text-sm line-height-36">
+      1. 修改订单未支付：自修改后30分钟内完成支付，超时自动修改失效，按初始订单执行
+    </view>
+
+    <view class="rule-item mt-24 text-sm line-height-36">
+      2. 修改订单已支付，修改生效
+    </view>
+  </view>
+
+  <!-- 取消规则 -->
+  <view a:if="{{ orderInfo.status !== DKStatusMap[4] }}">
+    <view a:if="{{ !orderInfo.leaseNo }}" class="card base-card mt-20">
+      <view class="section-title font-medium">取消规则</view>
+
+      <view class="rule-item mt-32 text-sm line-height-36">
+        1. 取车时间前 ({{ orderInfo.bookPickUpTime }}前)：免费取消
+      </view>
+
+      <view class="rule-item mt-24 text-sm line-height-36">
+        2. 超过{{ orderInfo.bookPickUpTime }}取消：取消订单将收取订单总金额
+      </view>
+    </view>
+
+    <view a:else class="card base-card mt-20">
+      <view class="section-title font-medium">续租取消规则</view>
+
+      <view class="rule-item mt-32 text-sm line-height-36">
+        1. 续租支付前：超过15分钟自动取消续租
+      </view>
+
+      <view class="rule-item mt-24 text-sm line-height-36">
+        2. 续租支付后：无法直接取消续租，可提前还车，将收取订单总金额
+      </view>
+    </view>
+  </view>
+
+  <!-- 开具发票 -->
+  <view a:if="{{ orderInfo.status !== DKStatusMap[4] }}" class="card base-card mt-20">
+    <view class="section-title font-medium">开具发票</view>
+
+    <view class="rule-item mt-32 text-sm line-height-36">
+      1. 请在订单结束后，联系运维开具
+    </view>
+  </view>
+
+  <!-- 底部操作区 -->
+  <view class="bottom-space"></view>
+  <view class="bottom-bar">
+    <view
+      a:if="{{ orderInfo.paymentStatus === 'BOOK_UNPAID' || orderInfo.paymentStatus === 'UPDATE_UNPAID' }}"
+      class="agreement flex-start mt-24 mx-20"
+      onTap="agreeChange"
+    >
+      <view>
+        <ant-checkbox
+          name="agree"
+          class="mr-12"
+          checked="{{ checked }}"
+        />
+      </view>
+      <view class="agreement-text text-xs text-gray">
+        <text>我已阅读并同意签署</text>
+        <text class="text-primary" catchTap="toWebView">《个人信息授权书》</text>
+      </view>
+    </view>
+
+    <view class="operation-bar flex-between h-130 px-22 pb-20">
+      <view
+        a:if="{{ orderInfo.paymentStatus === 'BOOK_UNPAID' || orderInfo.paymentStatus === 'UPDATE_UNPAID' }}"
+        class="pending-amount flex-start text-sm text-gray"
+      >
+        待支付：
+        <view class="amount-value text-red text-xl font-bold">
+          <text class="text-base">￥</text>
+          {{ needPay }}
+        </view>
+      </view>
+      <view a:else></view>
+
+      <view class="buttons flex-center">
+        <ant-button
+          type="default"
+          size="large"
+          onTap="callClick"
+        >联系运维</ant-button>
+
+        <ant-button
+          a:if="{{ evaluation === 'to' }}"
+          type="primary"
+          size="large"
+          onTap="toEvaluate"
+        >去评价</ant-button>
+        <ant-button
+          a:elif="{{ evaluation === 'detail' }}"
+          type="primary"
+          size="large"
+          onTap="() => toEvaluate(true)"
+        >查看评价</ant-button>
+
+        <view class="ml-10">
+          <ant-button
+          a:if="{{ orderInfo.paymentStatus === 'BOOK_UNPAID' || orderInfo.paymentStatus === 'UPDATE_UNPAID' }}"
+          type="primary"
+          disabled="{{ !checked }}"
+          size="large"
+          onTap="payClick"
+          class="ml-10"
+        >立即支付</ant-button>
+        </view>
+
+        <view class="ml-10">
+          <ant-button
+              a:if="{{ orderInfo.leasePaymentStatus === 'UNPAID' }}"
+              type="primary"
+              size="large"
+              onTap="leasePayClick"
+            >立即支付</ant-button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 手机号错误提示 -->
+<view a:elif="{{ error.phoneError }}">
+  <view class="phone-error flex-col items-center">
+
+        <image 
+          class="error-img" 
+          src="{{ phoneErrorImgUrl }}" 
+        />
+
+        <view class="error-text mt-44 text-gray text-base line-height-48 text-center">
+          请用<text class="text-black">{{ error.phone }}</text>号码<view />登录完成下单哟！
+        </view>
+
+        <view class="switch-btn mx-auto">
+          <ant-button
+            type="primary"
+            text="切换账号"
+            onTap="toLogin"
+          ></ant-button>
+        </view>
+  </view>
+</view>

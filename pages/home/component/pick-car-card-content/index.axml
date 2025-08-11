@@ -1,0 +1,10 @@
+
+<view class="container">
+  <city-point />
+
+  <time />
+
+  <view class="btn-part">
+    <van-button type="primary" onTap="handleSelectCar">去选车</van-button>
+  </view>
+</view>

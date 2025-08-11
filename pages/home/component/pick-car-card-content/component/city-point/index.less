@@ -1,0 +1,70 @@
+.city-point {
+  display: flex;
+  padding: 40rpx 32rpx;
+
+  .city-point-item {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.city {
+      width: 140rpx;
+    }
+
+    &.point {
+      flex: 1;
+      margin-left: 80rpx;
+    }
+
+    &.is-different {
+      width: 130rpx;
+      margin-left: 30rpx;
+
+      .city-point-title {
+        justify-content: flex-end;
+      }
+
+      .switch {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    .city-point-title {
+      color: #999999;
+      display: flex;
+      align-items: center;
+
+      .distance {
+        margin-left: 18rpx;
+        background: #00ca96;
+        border-radius: 8rpx;
+        padding: 4rpx 8rpx;
+        color: #fff;
+        line-height: 1;
+        font-size: 10px;
+      }
+    }
+
+    .city-point-content {
+      display: flex;
+      align-items: center;
+      margin-top: 26rpx;
+      overflow: hidden;
+
+      .word {
+        max-width: calc(100% - 10px);
+        color: #333333;
+        font-weight: 500;
+        font-size: 32rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .icon {
+        margin-left: 4rpx;
+      }
+    }
+  }
+}

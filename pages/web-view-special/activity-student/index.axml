@@ -1,0 +1,3 @@
+<web-view src="{{ url }}">
+    <cover-image src="https://mobje-pro-04-1309183960.cos.ap-beijing.myqcloud.com/banner/activity-student.png" />
+  </web-view>

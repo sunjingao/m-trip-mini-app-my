@@ -1,0 +1,43 @@
+<image src="https://mobje-pro-04-cos.mobje.cn/mini/mini/header.png" class="top-bar" />
+
+<view a:if="{{ isLogin }}" class="login-part">
+  <image src="{{ headPortrait }}" class="person" />
+  <view class="info">
+    <view class="login">
+      <view>{{ name }}</view>
+    </view>
+    <view class="des">{{ review }}</view>
+  </view>
+</view>
+
+<view a:else class="login-part">
+  <image src="https://mobje-pro-04-cos.mobje.cn/mini/mini/avatar.png" class="person" />
+  <view class="info">
+    <view class="login" onTap="handleLogin">
+      <view>未登录</view>
+      <!-- <van-icon name="arrow" /> -->
+    </view>
+    <view class="des">登录账号畅享便捷出行</view>
+  </view>
+</view>
+
+<view class="list-part">
+  <view class="list-content">
+    <ant-list>
+      <ant-list-item a:for="{{ list }}" a:key="index" arrow onTap="handleJump" data-route="{{ item.route }}" data-login="{{ item.login }}" image="{{ item.icon }}">
+        {{ item.title }}
+      </ant-list-item>
+
+      <!-- <ant-list-item a:for="{{ list }}" a:key="index" arrow onTap="handleJump" data-route="{{ item.route }}" data-login="{{ item.login }}">
+        <view class="list-item">
+          <image class="img" src="{{ item.icon }}" />
+          <view class="title">{{ item.title }}</view>
+        </view>
+      </ant-list-item> -->
+    </ant-list>
+  </view>
+
+  <view class="bottom-part">
+    <image class="logo" src="{{ bottomLogo }}" />
+  </view>
+</view>

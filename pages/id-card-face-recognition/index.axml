@@ -1,0 +1,32 @@
+<view class="container">
+
+  <van-steps items="{{ stepsConfig.steps }}" current="{{ stepsConfig.current }}" />
+
+
+  <view class="title">
+    验证身份
+  </view>
+
+  <view class="face-part">
+    <image src="{{ faceUrl }}"></image>
+  </view>
+
+  <view class="des">
+    为继续给您提供优质的服务，确保本人操作使用，我们需要获取您的授权进行人脸识别。
+  </view>
+
+  <view class="agreement-part">
+    <view onTap="handleChangeAgree">
+      <radio class="radio" checked="{{ checked }}" color="#0080FF" />
+    </view>
+    <view class="tip">
+      我已阅读并同意签署
+      <text class="agreement" onTap="handleGoAgreement">《摩捷出行人脸识别服务协议》</text>
+    </view>
+  </view>
+
+  <van-button onTap="handleConfirm" type="default">同意并继续</van-button>
+  <view class="mt-10px">
+    <van-button onTap="handleReject">不同意</van-button>
+  </view>
+</view>

@@ -1,0 +1,40 @@
+<view class="page">
+  <ant-list
+    header="当前定位"
+  >
+    <ant-list-item>
+      <view class="location-title">
+        <view class="left">
+          <ant-icon type="EnvironmentOutline" />
+          <view class="city-name" a:if="{{ currentLocationInfo.isGpsOpen }}">{{currentLocationInfo.cityName}}</view>
+          <view class="city-name" a:else>未获取到定位</view>
+        </view>
+        <view class="right" onTap="handleLocate">重新定位</view>
+      </view>
+    </ant-list-item>
+  </ant-list>
+
+  <ant-index-bar
+    className="indexbar"
+    items="{{indexKeys}}"
+    current="{{current}}"
+    onChange="onChange"
+  >
+    <view
+      slot="$default"
+      slot-scope="props"
+    >
+      <ant-list header="{{props.value.label}}">
+        <ant-list-item
+          a:for="{{indexMap[props.value.label]}}"
+          a:for-index="index"
+          a:for-item="itemX"
+          onTap="handleSelectCity" 
+          data-cityCode="{{ itemX.cityCode }}"
+        >
+          {{ itemX.cityName }}
+        </ant-list-item>
+      </ant-list>
+    </view>
+  </ant-index-bar>
+</view>

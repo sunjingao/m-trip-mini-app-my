@@ -1,0 +1,8 @@
+{
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "ant-input": "antd-mini/es/Input/index",
+    "ant-button": "antd-mini/es/Button/index",
+    "ant-checkbox": "antd-mini/es/Checkbox/index"
+  }
+}

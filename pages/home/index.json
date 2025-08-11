@@ -1,0 +1,10 @@
+{
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "van-button": "antd-mini/es/Button/index",
+    "license": "./component/license/index",
+    "native-alert": "./component/native-alert/index",
+    "pick-car-card-content": "./component/pick-car-card-content/index",
+    "order-card-content": "./component/order-card/index"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "van-button": "antd-mini/es/Button/index",
+    "van-steps": "antd-mini/es/Steps/index"
+  }
+}

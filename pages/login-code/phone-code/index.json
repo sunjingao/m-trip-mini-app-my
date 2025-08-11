@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "ant-number-keyboard": "antd-mini/es/NumberKeyboard/index",
+    "ant-list-item": "antd-mini/es/List/ListItem/index",
+    "ant-list": "antd-mini/es/List/index"
+  }
+}

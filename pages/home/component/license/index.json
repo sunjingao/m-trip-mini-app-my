@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "van-dialog": "antd-mini/es/Dialog/index",
+    "van-button": "antd-mini/es/Button/index"
+  }
+}

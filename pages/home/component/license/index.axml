@@ -1,0 +1,6 @@
+<van-dialog title="用户协议和隐私政策" visible="{{ true }}" direction="vertical" footer="{{ footer }}" onButtonTap="handleConfirm">
+
+  <view class="word-part" slot="content">
+    摩捷租车小程序”为您提供优质的汽车租赁及相关服务，我们非常重视您的隐私保护和个人信息保护。本隐私政策适用于您通过任何方式对“摩捷租车小程序”各项服务的访问和使用。“摩捷租车小程序”在向您提供产品或服务时，可能会收集、保存、使用您的个人信息。我们深知个人信息对您的重要性，并会尽全力保护您的个人信息安全可靠。我们对您个人信息的所有收集、保存、使用活动都将按照相关法律法规及<text onTap="handleGoPrivacy" class="agree">《摩捷租车小程序隐私政策》</text>进行。为了更好地保障您的个人权益，请您认真阅读<text onTap="handleGoPrivacy" class="agree">《摩捷租车小程序隐私政策》</text>的全部内容。
+  </view>
+</van-dialog>

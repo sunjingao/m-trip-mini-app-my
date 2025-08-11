@@ -1,0 +1,103 @@
+<view a:if='{{ isShow }}' class="container" onTap="handleClickOrderCard">
+  <view class="card-top">
+
+    <view class="sign-contract" a:if="{{ orderDetail.status === ORDER_STATUS.ALLOCATED && isSign === false }}" catch:tap='handleGoSignContract'>
+      您还未签署租车合同，请在取车前完成
+    </view>
+
+    <view class="car-info">
+      <image src="{{ orderDetail.modelPic || orderDetail.seriesPic }}" class="img"></image>
+
+      <view class="info">
+        <view class="seriesName">{{ orderDetail.seriesName }}</view>
+        <view a:if="{{ orderDetail.plateLicenseNo }}" class="plateLicenseNo">{{ vehicleModelPropertyName }}</view>
+      </view>
+      <view class="grow"></view>
+      <view class="status">
+        <text class="label">
+          {{ orderStatusLabel }}
+        </text>
+        <van-count-down a:if="{{ countDown.isShow }}" time="{{ countDown.time }}" onCountdownFinish="handleCountdownEnd">
+            <view
+              slot="$default"
+              slot-scope="module"
+            >
+              <view>{{module.min}}:{{module.sec}}</view>
+            </view>
+        </van-count-down>
+      </view>
+    </view>
+  </view>
+
+  <!--   待取车 未支付   -->
+  <view a:if="{{ orderDetail.status === ORDER_STATUS.BOOK && orderDetail.paymentStatus === ORDER_PAYMENT_STATUS.BOOK_UNPAID }}">
+    <view class="time-info">
+      <view class="time">取车时间：{{ orderDetail.pickUpTime || orderDetail.bookPickUpTime }}</view>
+    </view>
+    <view class="location-info">
+      取车地址：{{ orderDetail.pickUpLocationName }}
+    </view>
+  </view>
+
+  <!--   待取车 已支付   -->
+  <view a:elif="{{ orderDetail.status === ORDER_STATUS.BOOK || orderDetail.status === ORDER_STATUS.ALLOCATED }}">
+    <view class="time-info">
+      <view class="time">取车时间：{{ orderDetail.pickUpTime || orderDetail.bookPickUpTime }}</view>
+      <view a:if="{{ orderDetail.bookOrReturnRemainTip }}" class="m-time-tag {{ isShowError && 'is-error' }}">
+        {{ orderDetail.bookOrReturnRemainTip }}
+      </view>
+    </view>
+    <view class="location-info">
+      取车地址：{{ orderDetail.pickUpLocationName }}
+    </view>
+  </view>
+
+  <!--   已取消 未退款   -->
+  <view a:elif="{{ orderDetail.status === ORDER_STATUS.CANCELLED && ![ORDER_PAYMENT_STATUS.BOOK_REFUND_FAILED, ORDER_PAYMENT_STATUS.BOOK_REFUNDING].includes(orderDetail.paymentStatus) }}">
+    <view class="time-info">
+      <view class="time">取车时间：{{ orderDetail.pickUpTime || orderDetail.bookPickUpTime }}</view>
+    </view>
+    <view class="location-info">
+      取车地址：{{ orderDetail.pickUpLocationName }}
+    </view>
+  </view>
+
+  <!--   待还车   -->
+  <view a:elif="{{ orderDetail.status === ORDER_STATUS.PICK_UP }}">
+    <view class="time-info">
+      <text class="time">还车时间：{{ orderDetail.returnTime || orderDetail.bookReturnTime }}</text>
+      <view a:if="{{ orderDetail.bookOrReturnRemainTip }}" class="m-time-tag {{ isShowError && 'is-error' }}">
+        {{ orderDetail.bookOrReturnRemainTip }}
+      </view>
+    </view>
+    <view class="location-info">
+      还车地址：{{ orderDetail.returnLocationName }}
+    </view>
+  </view>
+
+  <!--  已还车 待支付   -->
+  <view a:elif="{{ orderDetail.status === ORDER_STATUS.RETURN && orderDetail.paymentStatus !== ORDER_PAYMENT_STATUS.FINISH_NEED_REFUND }}">
+    <view class="time-info">
+      <text class="time">取车时间：{{ orderDetail.pickUpTime || orderDetail.bookPickUpTime }}</text>
+    </view>
+    <view class="location-info">
+      <text>还车时间：{{ orderDetail.returnTime || orderDetail.bookReturnTime }}</text>
+      <view a:if="{{ orderDetail.bookOrReturnRemainTip }}" class="m-time-tag {{ isShowError && 'is-error' }}">
+        {{ orderDetail.bookOrReturnRemainTip }}
+      </view>
+    </view>
+  </view>
+
+  <!--   已还车 待退款   -->
+  <view a:else>
+    <view class="time-info">
+      <text class="time">取车时间：{{ orderDetail.pickUpTime || orderDetail.bookPickUpTime }}</text>
+    </view>
+    <view class="location-info">
+      <text>还车时间：{{ orderDetail.returnTime || orderDetail.bookReturnTime }}</text>
+      <view a:if="{{ orderDetail.bookOrReturnRemainTip }}" class="m-time-tag {{ isShowError && 'is-error' }}">
+        {{ orderDetail.bookOrReturnRemainTip }}
+      </view>
+    </view>
+  </view>
+</view>

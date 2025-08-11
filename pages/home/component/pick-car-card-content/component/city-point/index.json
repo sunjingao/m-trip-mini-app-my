@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "van-switch": "antd-mini/es/Switch/index",
+    "van-icon": "antd-mini/es/Icon/index"
+  }
+}

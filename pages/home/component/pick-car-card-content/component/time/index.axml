@@ -1,0 +1,25 @@
+<view onTap="handleShowTimeDetail" class="time">
+
+  <view class="item">
+    <view class="title">
+      {{ startDay }}
+    </view>
+    <view class="content">
+      {{ startTime }}
+    </view>
+  </view>
+
+  <view style="width: 100px">
+    <van-divider textPosition="center" text="{{ longTime }}" textStyle="padding: 10rpx 20rpx; background-color: #ebf2fa;border-radius: 24rpx; font-size: 14px;" />
+  </view>
+
+  <view class="item">
+    <view class="title">
+      {{ endDay }}
+    </view>
+    <view class="content">
+      {{ endTime }}
+    </view>
+  </view>
+
+</view>

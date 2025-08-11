@@ -1,0 +1,71 @@
+<view class="page">
+
+  <view class="search-part">
+    <ant-input
+      value="{{ fuzzySearch }}"
+      label="{{ selectedPointInfo.cityInfo.cityName }}"
+      placeholder="请输入搜索关键词"
+      use-action-slot
+      custom-class="custom-search"
+      onChange="handleSearchChange"
+    >
+      <view slot="prefix">
+        <view class="preifx">
+          <view>{{ selectedPointInfo.cityInfo.cityName }}</view>
+          <ant-icon class="ml-8px" type="SearchOutline">
+          </ant-icon>
+        </view>
+      </view>
+
+      <view slot="suffix" onTap="handleSearch" class="word">
+        搜索
+      </view>
+    </ant-input>
+  </view>
+
+  <ant-list header="当前定位">
+    <ant-list-item>
+      <view class="location-title">
+        <view class="left">
+          <ant-icon type="EnvironmentOutline" />
+          <view a:if="{{ currentLocationInfo.isGpsOpen }}" class="city-name">
+            {{currentLocationInfo.locationName}}
+          </view>
+          <view a:else class="city-name">未获取到定位</view>
+        </view>
+        <view class="right" onTap="handleLocate">重新定位</view>
+      </view>
+    </ant-list-item>
+  </ant-list>
+
+  <view class="content-part">
+    <view class="location-title">网点</view>
+    <scroll-view scroll-y onScrollToLower="onScrollToLower" class="scroll-view-h">
+      <ant-list>
+        <ant-list-item
+          a:for="{{ list }}"
+          wx:key="index"
+          brief="{{ item.address }}"
+          data-index="{{ index }}"
+          onTap="handleChooseItem"
+        >
+          <view class="item">
+            <view class="title">
+              <ant-icon type="LocationOutline" />
+              <view class="ml-8px">{{ item.name }}</view>
+            </view>
+            <view class="distance">
+              {{ item.showDistance }}
+            </view>
+          </view>
+        </ant-list-item>
+
+        <view a:if="{{hasMore}}" class="has-more">
+          数据加载中...
+        </view>
+        <view a:else class="no-more">没有更多数据了</view>
+      </ant-list>
+    </scroll-view>
+  </view>
+
+</view>

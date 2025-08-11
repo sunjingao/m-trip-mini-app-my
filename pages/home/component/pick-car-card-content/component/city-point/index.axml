@@ -1,0 +1,69 @@
+<view class="city-point">
+
+  <view class="city-point-item city">
+    <view class="city-point-title">取车城市</view>
+    <view onTap="handleCity" data-type="pickup" class="city-point-content">
+      <view class="word">
+        {{ selectedPointInfo.cityInfo.cityName }}
+      </view>
+
+      <van-icon type="DownOutline" class="ml-8px" />
+    </view>
+  </view>
+
+  <view class="city-point-item point">
+    <view class="city-point-title">
+      <view a:if="{{ selectedPointInfo.isDifferent }}">取车网点</view>
+      <view a:else>取还车网点</view>
+      <view a:if="{{pickupPointDis}}" class="distance">{{ pickupPointDis }}</view>
+    </view>
+    <view onTap="handlePoint" data-type="pickup" class="city-point-content">
+      <view class="word">
+        {{
+        selectedPointInfo.pickUpPointInfo.name || '附近暂无网点'
+        }}
+      </view>
+      <van-icon type="DownOutline" class="ml-8px" />
+    </view>
+  </view>
+
+  <view class="city-point-item is-different">
+    <view class="city-point-title">跨网点还车</view>
+    <view class="city-point-content switch {{ selectedPointInfo.isDifferent ? 'is-open' : '' }}">
+      <!-- 使用 node-class 是因为修改size会有样式问题 -->
+      <van-switch
+        checked="{{ selectedPointInfo.isDifferent }}"
+        onChange="handleDiffer"
+        size="small"
+      />
+    </view>
+  </view>
+</view>
+
+
+<view a:if="{{ selectedPointInfo.isDifferent }}" class="city-point">
+
+  <view class="city-point-item city">
+    <view class="city-point-title">还车城市</view>
+    <view class="city-point-content" onTap="handleCity" data-type="return">
+      <view class="word">
+        {{ selectedPointInfo.cityInfo.cityName }}
+      </view>
+    </view>
+  </view>
+
+  <view class="city-point-item point">
+    <view class="city-point-title">
+      <view>还车网点</view>
+      <view a:if="{{ returnPointDis }}" class="distance">{{ returnPointDis }}</view>
+    </view>
+    <view onTap="handlePoint" data-type="return" class="city-point-content">
+      <view class="word">
+        {{
+        selectedPointInfo.returnPointInfo.name || '附近暂无网点'
+        }}
+      </view>
+      <van-icon type="DownOutline" class="ml-8px" />
+    </view>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+<view class="page gray-bg">
+  <license a:if="{{ !isAgreePrivacy }}"></license>
+  <view a:else class="content">
+    <native-alert />
+
+    <pick-car-card-content />
+
+    <order-card-content a:if="{{ isShow }}" />
+
+    <swiper class="swiper-container" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{1000 * 3}}">
+      <swiper-item a:for="{{swiperList}}" track-by="url">
+        <image onTap="handleTapSwiperItem" data-cb="{{ item.cbName }}" class="img" src="{{ item.url }}" mode="widthFix"></image>
+      </swiper-item>
+    </swiper>
+
+    <view class="logo" onTap="handleAbout" class="logo">
+      <image mode="aspectFit" src="{{ mobjeLogo }}" class="img"></image>
+    </view>
+
+    <view a:if="{{ !token }}" class="login-banner">
+      <view class="bg"></view>
+      <text class="des">登录摩捷，开启自由出行新时代</text>
+      <van-button type="info" round inline onTap="handleLogin" size="small">立即登录</van-button>
+    </view>
+  </view>
+  <!-- <slide-button a:if="{{ token }}" onPosition="handleChangePosition">
+    <image class="move-button" onTap="handleService" src="https://mobje-pro-04-1309183960.cos.ap-beijing.myqcloud.com/mini/mini/serviceicon.png"></image>
+  </slide-button> -->
+</view>
+
+

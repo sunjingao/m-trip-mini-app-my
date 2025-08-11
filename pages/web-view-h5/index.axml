@@ -1,0 +1,4 @@
+<!-- 这里还差骨架屏，以及跳转回来的数据 -->
+<!-- <cover-image></cover-image> -->
+<web-view src="{{ url }}" onMessage="handleMesage">
+</web-view>
