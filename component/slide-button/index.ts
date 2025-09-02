@@ -49,11 +49,11 @@ Component({
   // 暂时没用，仅为后面参考
   observers: {
     'initTop': function(val) {
-      debugger
+      // debugger
       // console.log("initTop", this.properties.initTop);
     },
     'top': function(val) {
-      debugger
+      // debugger
       // console.log("top", val);
     }
   },

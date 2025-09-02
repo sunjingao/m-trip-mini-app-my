@@ -4,9 +4,9 @@
   <image src="{{ headPortrait }}" class="person" />
   <view class="info">
     <view class="login">
-      <view>{{ name }}</view>
+      <view style="color: white;">{{ name }}</view>
     </view>
-    <view class="des">{{ review }}</view>
+    <view class="des" style="color: green;">{{ review }}</view>
   </view>
 </view>
 

@@ -8,7 +8,9 @@ Page({
     phone: "",
     queryParams: {
       // 是否返回原h5页面
-      fromPath: ''
+      fromPath: '',
+      // 订单号
+      orderNo: ''
     }
   },
 
@@ -58,9 +60,26 @@ Page({
       }
     });
 
-    debugger
+
     if (this.data.queryParams.fromPath) {
-      redirectToTripMiniH5Webview(this.data.queryParams.fromPath)
+
+      // 活动页，直接跳转
+      if (this.data.queryParams.fromPath === "activity-student") {
+        my.redirectTo({
+          url: "/pages/web-view-special/activity-student/index"
+        })
+      } else if (this.data.queryParams.fromPath === "dk") {
+        // 支付宝扫描二维码 alipays://platformapi/startapp 方法打开，token没存储，暂时忽略这个特殊的处理。可能因为时间的问题，导致proxy没有存储，而重新启动。时间问题，暂时不予验证
+        my.setStorageSync({
+          key: "token",
+          data: result.token,
+        })
+        my.redirectTo({
+          url: `/pages/dk/dk-order?orderNo=${this.data.queryParams.orderNo}`
+        })
+      } else {
+        redirectToTripMiniH5Webview(this.data.queryParams.fromPath) 
+      }
     } else {
       my.switchTab({
         url: '/pages/home/index'
@@ -70,10 +89,10 @@ Page({
 
   onLoad(options) {
     addBehaviorInLoad(this)
-
     this.setData({
       phone: options.phone,
-      'queryParams.fromPath': options.fromPath
+      'queryParams.fromPath': options.fromPath,
+      'queryParams.orderNo': options.orderNo,
     })
 
     this.handleSendCode()

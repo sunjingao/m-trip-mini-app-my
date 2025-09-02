@@ -103,7 +103,6 @@ function getGlobalDataProxy() {
     },
     set(target, property, value, keysPath) {
       target[property] = value;
-
       debounceCb(globalData, keysPath);
 
       return true;

@@ -1,3 +1,5 @@
+import { OperationUrl } from "mo-front-end-util";
+import { jumpTripMiniH5Webview } from "@/util/common-url";
 import storeBehavior from "@/behaviors/store/index"
 
 Component({
@@ -74,17 +76,34 @@ Component({
 
     handleCity(content) {
       const type = content.currentTarget.dataset.type
-      my.navigateTo({
-        url: `/pages/city-select-page/index?type=${type}`
-      })
+
+      const url = OperationUrl.concat("city-select-page", {
+        isFromBase: true,
+        type
+      });
+
+      jumpTripMiniH5Webview(url);    
+      // my.navigateTo({
+      //   url: `/pages/city-select-page/index?type=${type}`
+      // })
     },
 
     handlePoint(content) {
+      // sja
+      // jumpTripMiniH5Webview
+
+      // my.navigateTo({
+      //   url: `/pages/location/index?type=${type}`
+      // })
+
       const type = content.currentTarget.dataset.type
 
-      my.navigateTo({
-        url: `/pages/location/index?type=${type}`
-      })
+      const url = OperationUrl.concat("location", {
+        isFromBase: true,
+        type: type,
+      });
+
+      jumpTripMiniH5Webview(url);    
     },
     
     handleDiffer() {

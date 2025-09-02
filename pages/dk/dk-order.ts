@@ -127,14 +127,14 @@ Page({
     }
   },
 
-  onGlobalDataChange(globalData) {
-    if (!globalData.token) {
-      return;
-    }
+  // onGlobalDataChange(globalData) {
+  //   if (!globalData.token) {
+  //     return;
+  //   }
 
-    this.getDetail()
-    this.getGuaranteeInfo()
-  },
+  //   this.getDetail()
+  //   this.getGuaranteeInfo()
+  // },
 
   priceFormat(price) {
     return ((price || 0) / 100).toFixed(
@@ -193,6 +193,7 @@ Page({
     try {
       const result = await getUserOrderDetailApi({ orderNo: this.data.orderNo })
 
+
       Object.assign(this.data.orderInfo, result)
       this.data.orderInfo.includeGuaranteeFee = this.data.orderInfo.includeGuaranteeFee
           ? JSON.parse(this.data.orderInfo.includeGuaranteeFee)
@@ -230,21 +231,20 @@ Page({
         this.getForegift()
       }
     } catch (res) {
-
-      if (res.errors?.[0].errcode == '15003') {
+      if (res.data.errors?.[0].errcode == '15003') {
         this.setData({
           'error.phoneError': true,
-          'error.phone': res.errors?.[0].errmsg,
+          'error.phone': res.data.errors?.[0].errmsg,
         })
       } else {
         this.setData({
           'error.phoneError': false,
           'error.netError': true,
         })
-        my.showToast({
-          content: res.errors?.[0].errmsg,
-          type: "none",
-        });
+        // my.showToast({
+        //   content: res.data.errors?.[0].errmsg,
+        //   type: "none",
+        // });
       }
     }
   },
@@ -572,10 +572,12 @@ Page({
   },
 
   toEvaluate(detail = '') {
-    // sja 看看这里怎么跳转
-    // uni.navigateTo({
-    //   url: `/pages/evaluation/evaluation?id=${orderInfo.id}&no=${orderInfo.no}&detail=${detail}&type=DK`
-    // })
+    const url = OperationUrl.concat("evaluation", {
+      orderType: "dk",
+      orderId: this.data.orderInfo.orderId,
+      orderNo: this.data.orderInfo.orderNo
+    });
+    jumpTripMiniH5Webview(url);
   },
 
   handleGoguarantee() {
@@ -587,14 +589,31 @@ Page({
   onLoad(option) {
     addBehaviorInLoad(this)
 
-    // sja
-    // this.setData({
-    //   orderNo: option.orderNo
-    // })
+    setTimeout(
+      () => {
 
-    this.setData({
-      orderNo: "000582042508042019000001"
-    })
+        const res = my.getLaunchOptionsSync() 
+
+        if (!this.globalDataProxy || !this.globalDataProxy.token) {
+          my.redirectTo({
+            url: `/pages/login/index?fromPath=${encodeURIComponent(encodeURIComponent(JSON.stringify("dk")))}&orderNo=${encodeURIComponent(encodeURIComponent(JSON.stringify(res.query.orderNo)))}`,
+          });
+    
+          return
+        }
+
+        // orderNo可能是扫码获取的，也可能是从登录跳转回来的
+        this.setData({
+          orderNo: option.orderNo || res.query.orderNo
+          // sja
+          // orderNo: "000582042509021440000001"
+        })
+    
+        this.getDetail()
+        this.getGuaranteeInfo()
+      },
+      1000
+    )
   },
 
   

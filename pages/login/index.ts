@@ -13,7 +13,9 @@ Page({
     checked: false,
     queryParams: {
       // 是否返回原h5页面
-      fromPath: ''
+      fromPath: '',
+      // 代课下单中会传入这个值
+      orderNo: ''
     }
   },
 
@@ -60,7 +62,7 @@ Page({
       })
 
       my.redirectTo({
-        url: `/pages/login-code/index?phone=${this.data.phone}&fromPath=${this.data.queryParams.fromPath}`
+        url: `/pages/login-code/index?phone=${this.data.phone}&fromPath=${this.data.queryParams.fromPath || ''}&orderNo=${this.data.queryParams.orderNo || ''}`
       })
     } finally {
       this.setData({
@@ -90,6 +92,7 @@ Page({
     // 进入到页面中，应该就清除token
     this.clearToken();
     this.data.queryParams.fromPath = params.fromPath
+    this.data.queryParams.orderNo = params.orderNo
   },
 
   /**

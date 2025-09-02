@@ -29,7 +29,7 @@ async function getIsTimeValid(timeLimitInfo) {
   return new Promise((resolve, reject) => {
     // 校验是否超过在允许提前预约的时间内
     if (
-      new Date(timeLimitInfo.returnTime).getHours - new Date().getHours() <
+      new Date(timeLimitInfo.returnTime).getHours() - new Date().getHours() <
       timeLimitInfo.appointmentTime
     ) {
       my.showToast({

@@ -11,7 +11,7 @@
     >
       <view slot="prefix">
         <view class="preifx">
-          <view>{{ selectedPointInfo.cityInfo.cityName }}</view>
+          <view class="word">{{ selectedPointInfo.cityInfo.cityName }}</view>
           <ant-icon class="ml-8px" type="SearchOutline">
           </ant-icon>
         </view>

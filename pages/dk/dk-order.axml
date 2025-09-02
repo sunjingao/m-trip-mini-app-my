@@ -450,9 +450,8 @@
         <view class="switch-btn mx-auto">
           <ant-button
             type="primary"
-            text="切换账号"
             onTap="toLogin"
-          ></ant-button>
+          >切换账号</ant-button>
         </view>
   </view>
 </view>

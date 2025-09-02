@@ -7,11 +7,11 @@
 
     <order-card-content a:if="{{ isShow }}" />
 
-    <swiper class="swiper-container" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{1000 * 3}}">
+    <!-- <swiper class="swiper-container" indicator-dots="{{true}}" autoplay="{{true}}" interval="{{1000 * 3}}">
       <swiper-item a:for="{{swiperList}}" track-by="url">
         <image onTap="handleTapSwiperItem" data-cb="{{ item.cbName }}" class="img" src="{{ item.url }}" mode="widthFix"></image>
       </swiper-item>
-    </swiper>
+    </swiper> -->
 
     <view class="logo" onTap="handleAbout" class="logo">
       <image mode="aspectFit" src="{{ mobjeLogo }}" class="img"></image>
