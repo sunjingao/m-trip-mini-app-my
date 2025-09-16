@@ -6,7 +6,7 @@
     <view class="login">
       <view style="color: white;">{{ name }}</view>
     </view>
-    <view class="des" style="color: green;">{{ review }}</view>
+    <view class="des" style="background-color: #0ccba2; color: white; padding: 4px 10px; border-radius: 5px;;">{{ review }}</view>
   </view>
 </view>
 

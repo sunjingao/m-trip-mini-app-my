@@ -15,7 +15,9 @@ Page({
       // 是否返回原h5页面
       fromPath: '',
       // 代课下单中会传入这个值
-      orderNo: ''
+      orderNo: '',
+      // 推费需要用到的id
+      id: ''
     }
   },
 
@@ -62,7 +64,7 @@ Page({
       })
 
       my.redirectTo({
-        url: `/pages/login-code/index?phone=${this.data.phone}&fromPath=${this.data.queryParams.fromPath || ''}&orderNo=${this.data.queryParams.orderNo || ''}`
+        url: `/pages/login-code/index?phone=${this.data.phone}&fromPath=${this.data.queryParams.fromPath || ''}&orderNo=${this.data.queryParams.orderNo || ''}&id=${this.data.queryParams.id || ''}`
       })
     } finally {
       this.setData({
@@ -93,6 +95,7 @@ Page({
     this.clearToken();
     this.data.queryParams.fromPath = params.fromPath
     this.data.queryParams.orderNo = params.orderNo
+    this.data.queryParams.id = params.id
   },
 
   /**

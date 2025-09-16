@@ -26,6 +26,9 @@ const getData = function (
     data: {},
     config: {},
     method: "get",
+  },
+  requestConfig = {
+    isHideError: false
   }
 ) {
   return new Promise((resolve, reject) => {
@@ -63,7 +66,9 @@ const getData = function (
               },
             });
           } else if (res.data.errors && res.data.errors.length > 0) {
-            my.showToast({ content: res.data.errors[0].errmsg, type: "none" });
+            if (!requestConfig.isHideError) {
+              my.showToast({ content: res.data.errors[0].errmsg, type: "none" });
+            }
           } else {
             let result = {};
             if (res.data.pageable) {
@@ -87,20 +92,20 @@ const getData = function (
   });
 };
 
-const get = function (url, data) {
+const get = function (url, data, requestConfig) {
   return getData({
     url,
     method: "get",
-    data,
-  });
+    data
+  }, requestConfig);
 };
 
-const post = function (url, data) {
+const post = function (url, data, requestConfig) {
   return getData({
     url,
     method: "post",
-    data,
-  });
+    data
+  }, requestConfig);
 };
 
 export default {

@@ -17,5 +17,9 @@ App({
 
   init() {
     this.initStore();
+
+    // my.navigateTo({
+    //   url: "/pages/center/platformFeeDetail"
+    // })
   },
 });

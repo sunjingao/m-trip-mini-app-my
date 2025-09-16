@@ -194,6 +194,17 @@ Page({
       const result = await getUserOrderDetailApi({ orderNo: this.data.orderNo })
 
 
+      setTimeout(
+        () => {
+          console.log(
+            'result',
+            result
+          )
+        },
+        1000 * 5
+      )
+
+
       Object.assign(this.data.orderInfo, result)
       this.data.orderInfo.includeGuaranteeFee = this.data.orderInfo.includeGuaranteeFee
           ? JSON.parse(this.data.orderInfo.includeGuaranteeFee)
@@ -363,6 +374,16 @@ Page({
     })
   },
 
+  async gotoPay() {
+    const url = OperationUrl.concat("pay", {
+      orderNo: this.data.orderInfo.no,
+      orderId: this.data.orderInfo.id,
+      payAmount: this.data.orderInfo.unpaidAmount || this.data.orderInfo.amount,
+      type: 'DK'
+    });
+    jumpTripMiniH5Webview(url);
+  },
+
   async payClick() {
     if (
         this.data.orderInfo.paymentStatus === 'BOOK_UNPAID' &&
@@ -372,18 +393,18 @@ Page({
       return
     }
     try {
-      await getNewestOrderApi({
+      const res = await getNewestOrderApi({
         orderNo: this.data.orderInfo.no,
         lastEditTime: this.data.orderInfo.lastEditTime
       })
-      this.handleCheck()
+
+      if (res) {
+        this.handleCheck()
+      } else {
+        this.gotoPay()
+      }
     } catch (e) {
-      const url = OperationUrl.concat("pay", {
-        orderNo: this.data.orderInfo.no,
-        payAmount: this.data.orderInfo.unpaidAmount || this.data.orderInfo.amount,
-        type: 'DK'
-      });
-      jumpTripMiniH5Webview(url);
+      this.gotoPay()
     }
   },
 
@@ -391,6 +412,7 @@ Page({
     const url = OperationUrl.concat("pay", {
       orderNo: this.data.orderInfo.no,
       leaseNo: this.data.orderInfo.leaseNo,
+      orderId: this.data.orderInfo.id,
       payAmount: this.data.orderInfo.allCost,
       type: 'DKLEASE'
     });
@@ -497,7 +519,8 @@ Page({
       payAmount: Math.abs(this.data.vehicleForegift.value - this.data.foregiftData.amount) * 100,
       foregiftAmount: this.data.vehicleForegift.value,
       type: 'FOREGIFT',
-      certification: 0
+      certification: 0,
+      orderId: this.data.orderInfo.id
     }))
 
     my.navigateTo({
@@ -574,7 +597,7 @@ Page({
   toEvaluate(detail = '') {
     const url = OperationUrl.concat("evaluation", {
       orderType: "dk",
-      orderId: this.data.orderInfo.orderId,
+      orderId: this.data.orderInfo.id,
       orderNo: this.data.orderInfo.orderNo
     });
     jumpTripMiniH5Webview(url);
@@ -590,32 +613,44 @@ Page({
     addBehaviorInLoad(this)
 
     setTimeout(
-      () => {
+        () => {
+          const res = my.getLaunchOptionsSync()
 
-        const res = my.getLaunchOptionsSync() 
+          if (!this.globalDataProxy || !this.globalDataProxy.token) {
+            my.redirectTo({
+              url: `/pages/login/index?fromPath=${encodeURIComponent(encodeURIComponent(JSON.stringify("dk")))}&orderNo=${encodeURIComponent(encodeURIComponent(JSON.stringify(res.query.orderNo)))}`,
+            });
 
-        if (!this.globalDataProxy || !this.globalDataProxy.token) {
-          my.redirectTo({
-            url: `/pages/login/index?fromPath=${encodeURIComponent(encodeURIComponent(JSON.stringify("dk")))}&orderNo=${encodeURIComponent(encodeURIComponent(JSON.stringify(res.query.orderNo)))}`,
-          });
-    
-          return
-        }
+            return
+          }
 
-        // orderNo可能是扫码获取的，也可能是从登录跳转回来的
-        this.setData({
-          orderNo: option.orderNo || res.query.orderNo
-          // sja
-          // orderNo: "000582042509021440000001"
-        })
-    
-        this.getDetail()
-        this.getGuaranteeInfo()
-      },
-      1000
+          debugger
+
+          // orderNo可能是扫码获取的，也可能是从登录跳转回来的
+          this.setData({
+            orderNo: option.orderNo || res.query.orderNo
+            // sja
+            // orderNo: "000582042509021440000001"
+          })
+
+          this.getDetail()
+          this.getGuaranteeInfo()
+        },
+        1000
     )
   },
 
+  onShow() {
+    console.log('onShow 1')
+    if (!this.data.orderNo) {
+      return
+    }
+
+    console.log('onShow 2')
+
+    this.getDetail()
+    this.getGuaranteeInfo()
+  },
   
   onUnload() {
     removeBehaviorInUnMount(this)

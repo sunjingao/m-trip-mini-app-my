@@ -10,7 +10,7 @@ export const getGuaranteeInfoDataApi = (params) =>
     request.get('/tsl/api/app/order/mini/guarantee-by-order', params)
 
 export const getNewestOrderApi = (params) =>
-    request.get('/tsl/api/app/order/mini/is-newest-order', params)
+    request.get('/tsl/api/app/order/mini/is-newest-order', params, { isHideError: true })
 
 /**
  * 获取押金信息

@@ -13,6 +13,7 @@ Page({
     // baseUrl: "http://localhost:8899/trip-mini-h5/index.html/",
     // baseUrl: "https://trip-sit-tc.mobje.cn/trip-mini-h5/index.html/",
     // path: "/main",
+    webViewContext: undefined,
     url: "",
   },
 
@@ -42,16 +43,22 @@ Page({
   },
 
   // 处理h5传递过来的data数据
-  handleMesage(event) {
-    if (!event.detail || event.detail.type !== "changeCommonData") {
+  async handleMessage(event) {
+    if (!event.detail) {
       return;
     }
 
-    // 取最近传入的数据
-    const receiveData = event.detail.data;
+    if (event.detail.type === "changeCommonData") {
+      // 取最近传入的数据
+      const receiveData = event.detail.data;
 
-    for (const [key, value] of Object.entries(receiveData)) {
-      this.globalDataProxy[key] = value;
+      for (const [key, value] of Object.entries(receiveData)) {
+        this.globalDataProxy[key] = value;
+      }
+    } else if (event.detail.type === "getAuthCode") {
+      const ret = await my.getAuthCode();
+
+      this.webViewContext.postMessage({ type: 'getAuthCode', value: ret.authCode });
     }
   },
 
@@ -69,6 +76,8 @@ Page({
    */
   onLoad(options) {
     addBehaviorInLoad(this)
+
+    this.webViewContext = my.createWebViewContext('web-view');
 
     if (!options.url) {
       return;

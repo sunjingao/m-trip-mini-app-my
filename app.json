@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/home/index",
-    "pages/city-select-page/index",
     "pages/location/index",
     "pages/web-view-normal/index",
     "pages/login/index",
@@ -16,7 +15,8 @@
     "pages/pickup-car-face/index",
     "pages/id-card-face-recognition/index",
     "pages/face/index",
-    "pages/dk/dk-order"
+    "pages/dk/dk-order",
+    "pages/center/platformFeeDetail"
   ],
   "lazyCodeLoading": "renderedComponents",
   "styleIsolation": "shared",
