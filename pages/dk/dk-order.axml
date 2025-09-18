@@ -225,24 +225,25 @@
     <view class="deposit-options mt-28">
       <view a:if="{{ foregiftData.foregiftStatus == '' }}" class="flex-between">
         <view
-          class="{{ foregiftPay === 'preauth' ? 'option-active' : 'option-default' }}"
-          class="deposit-option"
-          onTap="foregiftPay = 'preauth'"
+          class="{{ foregiftPay === 'preauth' ? 'option-active' : 'option-default', 'deposit-option' }}"
+          data-type="preauth"
+          onTap="handleChangeDeposit"
         >
           <view class="option-header flex-start mt-20">
             <image class="option-icon" src="{{ preauthImgUrl }}" />
             <view class="option-title ml-10">芝麻信用免押</view>
           </view>
           <view class="option-desc mt-26 text-xs text-gray line-height-36">
-            芝麻分>=600分，授权成功后免收
+            芝麻分>=550分，授权成功后免收
           </view>
           <image a:if="{{ foregiftPay === 'preauth' }}" class="option-check" src="../../static/icon/checked.png" />
         </view>
 
         <view
-          class="{{ foregiftPay === 'foregift' ? 'option-active' : 'option-default' }}"
-          class="deposit-option ml-20"
-          onTap="foregiftPay = 'foregift'"
+          class="{{ foregiftPay === 'foregift' ? 'option-active' : 'option-default', 'deposit-option' }}"
+          style="margin-left: 20rpx"
+          data-type="foregift"
+          onTap="handleChangeDeposit"
         >
           <view class="option-header flex-start mt-20">
             <image class="option-icon" src="{{ forgetImgUrl }}" />

@@ -234,7 +234,7 @@ Page({
         evaluation: this.data.evaluation
       })
 
-      const res = await getDepositAmountApi({ orderNo: this.data.orderNo })      
+      const res = await getDepositAmountApi({ orderNo: this.data.orderNo })
       this.setData({
         vehicleForegift: res
       })
@@ -514,18 +514,30 @@ Page({
       })
       return
     }
-    let str = encodeURIComponent(JSON.stringify({
+    // let str = encodeURIComponent(JSON.stringify({
+    //   enrolleeId: this.data.foregiftData.enrolleeId,
+    //   payAmount: Math.abs(this.data.vehicleForegift - this.data.foregiftData.amount) * 100,
+    //   foregiftAmount: this.data.vehicleForegift,
+    //   type: 'FOREGIFT',
+    //   certification: 0,
+    //   orderId: this.data.orderInfo.id
+    // }))
+
+    const url = OperationUrl.concat("pay", {
       enrolleeId: this.data.foregiftData.enrolleeId,
-      payAmount: Math.abs(this.data.vehicleForegift.value - this.data.foregiftData.amount) * 100,
-      foregiftAmount: this.data.vehicleForegift.value,
+      payAmount: Math.abs(this.data.vehicleForegift - this.data.foregiftData.amount) * 100,
+      foregiftAmount: this.data.vehicleForegift,
       type: 'FOREGIFT',
       certification: 0,
-      orderId: this.data.orderInfo.id
-    }))
+      orderId: this.data.orderInfo.id,
+      orderNo: this.data.orderNo,
+    });
 
-    my.navigateTo({
-      url: `/pages/pay/index?${str}`
-    })
+    jumpTripMiniH5Webview(url);
+    // // sja
+    // my.navigateTo({
+    //   url: `/pages/pay/index?params=${str}`
+    // })
   },
 
   foregitPay() {
@@ -539,7 +551,7 @@ Page({
         confirmText: '知道了',
         showCancel: false
       })
-    } else if (this.data.foregiftPay.value == 'preauth') {
+    } else if (this.data.foregiftPay == 'preauth') {
       if (this.data.foregiftData.freezenPre == '2') {
         my.showModal({
           title: '提示',
@@ -586,7 +598,7 @@ Page({
           cancelText: '稍后再说',
           success: (res) => {
             if (res.confirm) {
-              this.data.rechargeClick()
+              this.rechargeClick()
             }
           }
         })
@@ -609,6 +621,12 @@ Page({
     })
   },
 
+  handleChangeDeposit(event) {
+    this.setData({
+      foregiftPay: event.target.dataset.type
+    })
+  },
+
   onLoad(option) {
     addBehaviorInLoad(this)
 
@@ -624,13 +642,11 @@ Page({
             return
           }
 
-          debugger
-
           // orderNo可能是扫码获取的，也可能是从登录跳转回来的
           this.setData({
             orderNo: option.orderNo || res.query.orderNo
             // sja
-            // orderNo: "000582042509021440000001"
+            // orderNo: "000582042509161123000001"
           })
 
           this.getDetail()
@@ -641,17 +657,14 @@ Page({
   },
 
   onShow() {
-    console.log('onShow 1')
     if (!this.data.orderNo) {
       return
     }
 
-    console.log('onShow 2')
-
     this.getDetail()
     this.getGuaranteeInfo()
   },
-  
+
   onUnload() {
     removeBehaviorInUnMount(this)
   }

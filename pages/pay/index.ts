@@ -24,6 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    debugger
     console.log("options", options)
     this.setData({
       params: JSON.parse(decodeURIComponent(options.params)),
